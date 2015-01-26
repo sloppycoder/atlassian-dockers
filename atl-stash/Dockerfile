@@ -13,15 +13,16 @@ RUN curl -Lks http://www.atlassian.com/software/stash/downloads/binary/atlassian
 
 # create group and users to run Stash
 RUN /usr/sbin/groupadd atlassian \
-      && /usr/sbin/useradd --create-home --home-dir /opt/stash --groups atlassian --shell /bin/bash stash \
+      && /usr/sbin/useradd --home-dir /opt/stash --groups atlassian --shell /bin/bash stash \
       && chown -R stash:stash /opt/stash
 
 ADD ./docker-entrypoint.sh /
 VOLUME ["/opt/atlassian-home"]
 
-# Launching Stash
+ENV STASH_HOME /opt/atlassian-home/stash
 ENV CONTEXT_PATH stash
-USER stash
+
 EXPOSE 7990 7999
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/opt/stash/bin/start-stash.sh", "-fg"]
+CMD ["start"]

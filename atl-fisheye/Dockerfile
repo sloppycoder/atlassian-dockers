@@ -9,15 +9,17 @@ RUN curl -Lks http://www.atlassian.com/software/fisheye/downloads/binary/fisheye
       && rm /root/fisheye.zip
 
 RUN /usr/sbin/groupadd atlassian \
-      && /usr/sbin/useradd --create-home --home-dir /opt/fisheye --groups atlassian --shell /bin/bash fisheye \
+      && /usr/sbin/useradd --home-dir /opt/fisheye --groups atlassian --shell /bin/bash fisheye \
       && chown -R fisheye:fisheye /opt/fecru-${FISHEYE_VERSION}
 
 ADD ./docker-entrypoint.sh /
 VOLUME ["/opt/atlassian-home"]
 
-ENV FISHEYE_OPTS "-Djava.net.preferIPv4Stack=true"
+ENV FISHEYE_INST /opt/atlassian-home/fisheye
+ENV CONTEXT_PATH fisheye
+
 EXPOSE 8060
-USER fisheye
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["tail", "-f", "/opt/atlassian-home/fisheye/var/log/fisheye.out"]
+CMD ["start"]
 

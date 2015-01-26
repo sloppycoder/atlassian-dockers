@@ -1,1 +1,1 @@
-docker build --rm --tag local/atl-fisheye .
+docker build --rm --tag sloppycoder/atl-fisheye .

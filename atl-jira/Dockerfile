@@ -18,10 +18,11 @@ RUN /usr/sbin/groupadd atlassian \
 
 ADD ./docker-entrypoint.sh /
 VOLUME ["/opt/atlassian-home"]
+
 ENV JIRA_HOME /opt/atlassian-home/jira
 ENV CONTEXT_PATH jira
 
 EXPOSE 8080
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["jira"]
+CMD ["start"]

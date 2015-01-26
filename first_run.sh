@@ -5,10 +5,10 @@
 #
 
 # start the data only container 
-docker run --name atldata 
+docker run --name atldata \
            -v /opt/atlassian-home \
            -v /var/lib/postgresql/data \
-           centos7:7 /bin/bash
+           centos:7 /bin/bash
 
 # start database server
 docker run -d --name postgres -e POSTGRES_PASSWORD=password \

@@ -1,8 +1,8 @@
 #!/bin/bash
 set -o errexit
-umask 0022
+umask 0027
 
-if [ "$1" = "jira" ]; then
+if [ "$1" = "start" ]; then
 
     if [ ! -d "$JIRA_HOME" ]; then
         mkdir -p $JIRA_HOME

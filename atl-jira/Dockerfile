@@ -13,14 +13,15 @@ RUN curl -Lks http://www.atlassian.com/software/jira/downloads/binary/atlassian-
 
 # create group and users to run Jira
 RUN /usr/sbin/groupadd atlassian \
-      && /usr/sbin/useradd --create-home --home-dir /opt/jira --groups atlassian --shell /bin/bash jira \
+      && /usr/sbin/useradd --home-dir /opt/jira --groups atlassian --shell /bin/bash jira \
       && chown -R jira:jira /opt/jira 
 
 ADD ./docker-entrypoint.sh /
 VOLUME ["/opt/atlassian-home"]
-
+ENV JIRA_HOME /opt/atlassian-home/jira
 ENV CONTEXT_PATH jira
-USER jira
+
 EXPOSE 8080
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/opt/jira/bin/start-jira.sh", "-fg"]
+CMD ["jira"]

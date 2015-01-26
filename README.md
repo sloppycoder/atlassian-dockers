@@ -7,8 +7,10 @@ Based on work by [repository by atlassianlabs](https://bitbucket.org/atlassianla
 The easiest way to build all images, then start all containers
 ```
 ./build_all.sh
-./first_run.sh
+VOL_PATH=<your data volume path> ./first_run.sh
 ```
+
+if VOL_PATH is not set, it'll default /mnt/sda1/data which should work fine if you use boot2docker.
 
 The point your browser and start apply license and configuration to applications.
 

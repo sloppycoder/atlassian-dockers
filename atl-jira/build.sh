@@ -1,1 +1,1 @@
-docker build --rm --tag local/atl-jira .
+docker build --rm --tag sloppycoder/atl-jira .

@@ -1,6 +1,6 @@
 ## Java application based on Centos:7
 
-This image is intened to run Java based appliations. It is based on Centos:7 and added following components:
+This image is intended to run Java based applications. It is based on Centos:7 and added following components:
 
 * Oracle JDK8u31
 * [gosu](https://github.com/tianon/gosu)

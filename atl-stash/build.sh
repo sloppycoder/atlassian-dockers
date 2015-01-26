@@ -1,1 +1,1 @@
-docker build --rm --tag local/atl-stash .
+docker build --rm --tag sloppycoder/atl-stash .

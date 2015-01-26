@@ -1,1 +1,1 @@
-docker build --rm --tag local/atl-data .
+docker build --rm --tag sloppycoder/atl-data .

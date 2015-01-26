@@ -17,6 +17,7 @@ RUN /usr/sbin/groupadd atlassian \
       && chown -R jira:jira /opt/jira 
 
 ADD ./docker-entrypoint.sh /
+VOLUME ["/opt/atlassian-home"]
 
 ENV CONTEXT_PATH jira
 USER jira

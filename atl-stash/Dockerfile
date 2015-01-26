@@ -17,6 +17,7 @@ RUN /usr/sbin/groupadd atlassian \
       && chown -R stash:stash /opt/stash
 
 ADD ./docker-entrypoint.sh /
+VOLUME ["/opt/atlassian-home"]
 
 # Launching Stash
 ENV CONTEXT_PATH stash

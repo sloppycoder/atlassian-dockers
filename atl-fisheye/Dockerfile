@@ -13,6 +13,7 @@ RUN /usr/sbin/groupadd atlassian \
       && chown -R fisheye:fisheye /opt/fecru-${FISHEYE_VERSION}
 
 ADD ./docker-entrypoint.sh /
+VOLUME ["/opt/atlassian-home"]
 
 ENV FISHEYE_OPTS "-Djava.net.preferIPv4Stack=true"
 EXPOSE 8060

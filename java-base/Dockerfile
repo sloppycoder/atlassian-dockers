@@ -36,7 +36,7 @@ RUN yum update -y  \
 # install Oracle JDK8, remove some files we don't need to reduce image size
 RUN curl -Lks -H "Cookie: oraclelicense=accept-securebackup-cookie" \
          http://download.oracle.com/otn-pub/java/jdk/8u31-b13/jdk-8u31-linux-x64.rpm \ 
-         -o /root/jdk8.rpm && \
+         -o /root/jdk8.rpm \
       && yum --nogpgcheck -y localinstall /root/jdk8.rpm \
       && rm /root/jdk8.rpm \
       && rm -rf /usr/java/jdk1.8.0_31/*src*.zip \
@@ -48,3 +48,4 @@ RUN curl -Lks -H "Cookie: oraclelicense=accept-securebackup-cookie" \
 ENV JAVA_HOME /usr/java/default
 
 CMD ["/bin/bash", "--login"]
+

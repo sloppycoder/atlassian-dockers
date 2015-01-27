@@ -2,6 +2,24 @@
 set -o errexit
 umask 0027
 
+parse_base_url() {
+
+    BASE_URL_SCHEME=`echo $1 |  awk ' { match($0,"(.*)://([0-9a-zA-Z\.]*):?([0-9]*)?",a) }  END { print a[1] }' `  
+    BASE_URL_HOST=`echo $1   |  awk ' { match($0,"(.*)://([0-9a-zA-Z\.]*):?([0-9]*)?",a) }  END { print a[2] }' `  
+    BASE_URL_PORT=`echo $1   |  awk ' { match($0,"(.*)://([0-9a-zA-Z\.]*):?([0-9]*)?",a) }  END { print a[3] }' `  
+
+    if [ -z "$BASE_URL_PORT" ]; then
+        BASE_URL_PORT=80
+    fi
+
+    echo === parse_base_url debug ===
+    echo BASE_URL=$1
+    echo BASE_URL_SCHEME=$BASE_URL_SCHEME
+    echo BASE_URL_HOST=$BASE_URL_HOST
+    echo BASE_URL_PORT=$BASE_URL_PORT
+
+}
+
 if [ "$1" = "start" ]; then
 
     if [ ! -d  "$FISHEYE_INST" ]; then
@@ -16,15 +34,39 @@ if [ "$1" = "start" ]; then
        CONTEXT_PATH="/$CONTEXT_PATH"
     fi
 
+     <http bind=":8060" proxy-host="10.112.185.99" proxy-port="80" proxy-scheme="http"/>
+
     FISHEYE_CONFIG=$FISHEYE_INST/config.xml
     if [ ! -f "$FISHEYE_CONFIG" ]; then
-        xmlstarlet ed --insert "/config/web-server" --type attr -n context -v "$CONTEXT_PATH" \
-              /opt/fecru-${FISHEYE_VERSION}/config.xml > $FISHEYE_CONFIG
+
+        if [ ! -z "$CONTEXT_PATH"]; then 
+            xmlstarlet ed --insert "/config/web-server" --type attr -n context -v "$CONTEXT_PATH" \
+                  /opt/fecru-${FISHEYE_VERSION}/config.xml > $FISHEYE_CONFIG
+        fi
+
+        if [ ! -z "$BASE_URL" ]; then
+            
+            parse_base_url $BASE_URL
+
+            mv $FISHEYE_CONFIG config.tmp
+
+            xmlstarlet ed 
+                --insert "/config/web-server" --type attr -n context -v "$CONTEXT_PATH" \
+                --insert "/config/web-server" --type attr -n site-url -v "$BASE_URL/$CONTEXT_PATH" \
+                --insert "/config/web-server/http" --type attr -n proxy-scheme -v "$BASE_URL_SCHEME" \
+                --insert "/config/web-server/http" --type attr -n proxy-host -v "$BASE_URL_HOST" \
+                --insert "/config/web-server/http" --type attr -n proxy-port -v "$BASE_URL_PORT" \
+                config.tmp > $FISHEYE_CONFIG
+
+            rm -f config.tmp
+
         chown fisheye:fisheye $FISHEYE_CONFIG
     fi
 
     /opt/fecru-${FISHEYE_VERSION}/bin/start.sh
+
     exec tail -f /opt/atlassian-home/fisheye/var/log/fisheye.out
+    
 fi
 
 

@@ -2,14 +2,14 @@ FROM sloppycoder/java-base
 MAINTAINER Li Lin <guru.lin@gmail..com>
 
 # Download and extract Stash 
-ENV STASH_VERSION 3.6.0
+ENV STASH_VERSION 3.6.1
 RUN curl -Lks http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${STASH_VERSION}.tar.gz \
          -o /root/stash.tar.gz \
       && mkdir /opt/stash \
       && tar zxf /root/stash.tar.gz --strip=1 -C /opt/stash \
       && rm /root/stash.tar.gz \
       && sed -i -e "s/^#!\/bin\/sh/#!\/bin\/bash/" /opt/stash/bin/catalina.sh \
-      && mv /opt/stash/conf/server.xml /opt/stash/conf/server-backup.xml
+      && mv /opt/stash/conf/server.xml /opt/stash/conf/server.xml.orig
 
 # create group and users to run Stash
 RUN /usr/sbin/groupadd atlassian \

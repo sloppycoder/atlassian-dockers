@@ -4,21 +4,32 @@ Based on work by [repository by atlassianlabs](https://bitbucket.org/atlassianla
 
 
 ### TL;DR
-The easiest way to build all images, then start all containers
+The easiest way to build all images, then start all containers and make all application available at BASE_URL (defaults )
+
 ```
 ./build_all.sh
-VOL_PATH=<your data volume path> ./first_run.sh
-```
+BASE_URL=http://127.0.0.1:8000 ./run_all.sh
 
-if VOL_PATH is not set, it'll default /mnt/sda1/data which should work fine if you use boot2docker.
+```
 
 The point your browser and start apply license and configuration to applications.
 
-JIRA:    http://docker_host:8080/jira
-Stash:   http://docker_host:7990/stash
-Fisheye: http://docker_host:8060/fisheye
-Bamboo:   http://docker_host:1234/bamboo
+JIRA:    BASE_URL/jira
+Stash:   BASE_URL/stash
+Fisheye: BASE_URL/fisheye
+Bamboo:   BASE_URL/bamboo
 
 To run the images without build,
 
-VOL_PATH=<your data volume data> curl -s https://github.com/sloppycoder/atlassian-dockers/blob/master/first_run.sh | /bin/bash -
+curl -s https://github.com/sloppycoder/atlassian-dockers/blob/master/run_all.sh | /bin/bash -
+
+
+### TO DO:
+
+* create apache container with custom proxy setup (SSL as separate container or has http/https setup both in same container?)
+* JIRA base_url support. create logic to create new connector and add host,port atributes in new connector.
+* Stash base_url support. create logic to modify existing connector to add host, port attributes.
+* Fisheye base_url support. create logic to add base_url, proxy scheme, host, port 
+* Setup bamboo....5.7.2
+* refactor: move dbinit out of first_run.sh and into a standalone script.
+* improvement: add check existing DB logic into dbinit script and incorporate into run_all.sh

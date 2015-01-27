@@ -8,7 +8,7 @@ RUN curl -Lks http://www.atlassian.com/software/jira/downloads/binary/atlassian-
       && mkdir /opt/jira \
       && tar zxf /root/jira.tar.gz --strip=1 -C /opt/jira \
       && rm /root/jira.tar.gz \
-      && mv /opt/jira/conf/server.xml /opt/jira/conf/server-backup.xml \
+      && mv /opt/jira/conf/server.xml /opt/jira/conf/server.xml.orig \
       && echo "jira.home = /opt/atlassian-home/jira" > /opt/jira/atlassian-jira/WEB-INF/classes/jira-application.properties 
 
 # create group and users to run Jira

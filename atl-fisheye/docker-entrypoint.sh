@@ -34,12 +34,11 @@ if [ "$1" = "start" ]; then
        CONTEXT_PATH="/$CONTEXT_PATH"
     fi
 
-     <http bind=":8060" proxy-host="10.112.185.99" proxy-port="80" proxy-scheme="http"/>
-
     FISHEYE_CONFIG=$FISHEYE_INST/config.xml
+
     if [ ! -f "$FISHEYE_CONFIG" ]; then
 
-        if [ ! -z "$CONTEXT_PATH"]; then 
+        if [ ! -z "$CONTEXT_PATH" ]; then 
             xmlstarlet ed --insert "/config/web-server" --type attr -n context -v "$CONTEXT_PATH" \
                   /opt/fecru-${FISHEYE_VERSION}/config.xml > $FISHEYE_CONFIG
         fi
@@ -50,15 +49,15 @@ if [ "$1" = "start" ]; then
 
             mv $FISHEYE_CONFIG config.tmp
 
-            xmlstarlet ed 
-                --insert "/config/web-server" --type attr -n context -v "$CONTEXT_PATH" \
-                --insert "/config/web-server" --type attr -n site-url -v "$BASE_URL/$CONTEXT_PATH" \
+            xmlstarlet ed \
+                --insert "/config/web-server" --type attr -n site-url -v "${BASE_URL}${CONTEXT_PATH}" \
                 --insert "/config/web-server/http" --type attr -n proxy-scheme -v "$BASE_URL_SCHEME" \
                 --insert "/config/web-server/http" --type attr -n proxy-host -v "$BASE_URL_HOST" \
                 --insert "/config/web-server/http" --type attr -n proxy-port -v "$BASE_URL_PORT" \
                 config.tmp > $FISHEYE_CONFIG
 
             rm -f config.tmp
+        fi
 
         chown fisheye:fisheye $FISHEYE_CONFIG
     fi

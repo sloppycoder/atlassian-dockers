@@ -11,14 +11,19 @@ if [ "$1" = "start" ]; then
     chown -R jira:jira $JIRA_HOME
     rm -f $JIRA_HOME/.jira-home.lock
 
-    if [ "$CONTEXT_PATH" == "ROOT" -o -z "$CONTEXT_PATH" ]; then
-        CONTEXT_PATH=
-    else
-        CONTEXT_PATH="/$CONTEXT_PATH"
-    fi
+    if [ ! -f "/opt/jira/conf/server.xml.1" ]; then 
+         # do this only when it's first launch
+        if [ "$CONTEXT_PATH" == "ROOT" -o -z "$CONTEXT_PATH" ]; then
+            CONTEXT_PATH=
+        else
+            CONTEXT_PATH="/$CONTEXT_PATH"
+            xmlstarlet ed -u "//Context/@path" -v "$CONTEXT_PATH" /opt/jira/conf/server.xml.orig > /opt/jira/conf/server.xml
+        fi
 
-    xmlstarlet ed -u "//Context/@path" -v "$CONTEXT_PATH" /opt/jira/conf/server-backup.xml > /opt/jira/conf/server.xml
-    chown jira:jira  /opt/jira/conf/server.xml
+        cp /opt/jira/conf/server.xml /opt/jira/conf/server.xml.1
+
+        chown jira:jira  /opt/jira/conf/server.xml*
+    fi
     
     exec /usr/local/bin/gosu jira /opt/jira/bin/start-jira.sh -fg
 

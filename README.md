@@ -26,10 +26,8 @@ curl -s https://github.com/sloppycoder/atlassian-dockers/blob/master/run_all.sh 
 
 ### TO DO:
 
-* create apache container with custom proxy setup (SSL as separate container or has http/https setup both in same container?)
-* JIRA base_url support. create logic to create new connector and add host,port atributes in new connector.
-* Stash base_url support. create logic to modify existing connector to add host, port attributes.
-* Fisheye base_url support. create logic to add base_url, proxy scheme, host, port 
 * Setup bamboo....5.7.2
-* refactor: move dbinit out of first_run.sh and into a standalone script.
 * improvement: add check existing DB logic into dbinit script and incorporate into run_all.sh
+* fin dout best way to support adding base url 
+* Stash auto site_url config works. but needs logic to prevent adding attributes multiple times
+   not an issue for fisheye because it skips configuration once the config file is present

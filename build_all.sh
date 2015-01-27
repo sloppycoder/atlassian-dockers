@@ -1,13 +1,5 @@
 cd java-base
-./build.sh
-cd ..
-
-cd atl-web
-./build.sh
-cd ..
-
-cd atl-data
-./build.sh
+#./build.sh
 cd ..
 
 cd atl-jira

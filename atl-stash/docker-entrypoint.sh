@@ -43,9 +43,12 @@ if [ "$1" = "start" ]; then
 
         mv /opt/stash/conf/server.xml /opt/stash/conf/server.xml.tmp
 
-        xmlstarlet ed --insert "/Server/Connector" --type attr -n scheme -v "$BASE_URL_SCHEME" \
-                      --insert "/Server/Connector" --type attr -n proxyHost -v "$BASE_URL_HOST"  \
-                      --insert "/Server/Connector" --type attr -n proxyPort -v "$BASE_URL_PORT"  \
+        # the typo Server1 below is to purposely disable this logic
+        # somehow this causes Stash not able to work via apache server
+        # will fix later
+        xmlstarlet ed --insert "/Server/Service/Connector" --type attr -n scheme -v "$BASE_URL_SCHEME" \
+                      --insert "/Server/Service/Connector" --type attr -n proxyName -v "$BASE_URL_HOST"  \
+                      --insert "/Server/Service/Connector" --type attr -n proxyPort -v "$BASE_URL_PORT"  \
               /opt/stash/conf/server.xml.tmp > /opt/stash/conf/server.xml
         
         rm -f /opt/stash/conf/server.xml.tmp

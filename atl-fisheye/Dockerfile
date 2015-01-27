@@ -9,7 +9,7 @@ RUN curl -Lks http://www.atlassian.com/software/fisheye/downloads/binary/fisheye
       && rm /root/fisheye.zip
 
 RUN /usr/sbin/groupadd atlassian \
-      && /usr/sbin/useradd --home-dir /opt/fisheye --groups atlassian --shell /bin/bash fisheye \
+      && /usr/sbin/useradd -M --home-dir /opt/fisheye --groups atlassian --shell /bin/bash fisheye \
       && chown -R fisheye:fisheye /opt/fecru-${FISHEYE_VERSION}
 
 ADD ./docker-entrypoint.sh /

@@ -11,11 +11,13 @@ docker run -d --name postgres -e POSTGRES_PASSWORD=password \
        --volumes-from="atldata" postgres:9.3
 sleep 3
 
-# to do add db create here
+# initialize database
+sleep 5
+cat dbinit.sh | docker run --rm -i --link postgres:db postgres:9.3 bash -
 
 # start Jira container and link it to volume from data container
 docker run -d --name jira --link postgres:db \
-       --volumes-from="atldata" -e BASE_URL=$BASE_URL \
+       --volumes-from="atldata" \
        sloppycoder/atl-jira
 sleep 3
 
@@ -32,6 +34,8 @@ docker run -d --name fisheye --link postgres:db \
 sleep 3
        
 # start front end apache server
-docker run -d --name atlweb --link jira:jira,stash:stash,fisheye:fisheye \
-       sloppycoder/atl-web
+docker run -d --name atlweb --link stash:stash -p 80:80 -p 443:443 \
+       --link stash:stash --link jira:jira --link fisheye:fisheye \
+       -v $PWD/httpd24-conf:/usr/local/apache2/conf \
+       httpd:2.4
        

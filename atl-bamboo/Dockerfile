@@ -10,7 +10,7 @@ RUN curl -Lks http://www.atlassian.com/software/bamboo/downloads/binary/atlassia
       && rm /root/bamboo.tar.gz \
       && sed -i -e "s/^#!\/bin\/sh/#!\/bin\/bash/" /opt/bamboo/bin/catalina.sh \
       && mv /opt/bamboo/conf/server.xml /opt/bamboo/conf/server.xml.orig \
-      && echo "bamboo.home=/opt/atlassian-home/bamboo" > /opt/atlassian/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties 
+      && echo "bamboo.home=/opt/atlassian-home/bamboo" > /opt/bamboo/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties 
 
 # create group and users to run Stash
 RUN /usr/sbin/groupadd atlassian \

@@ -4,9 +4,10 @@ BASEDIR=$(readlink -f $0 | xargs dirname)
 
 usage() {
 
-echo <<END_OF_HELP
+echo "
 
  Usage:
+
     run.sh all             # startup everything
 
     run.sh <app>           # stop and remove <app> container, create a new one in background
@@ -25,8 +26,7 @@ echo <<END_OF_HELP
 
     run.sh  clean          # remoev all untagged images
 
-
-END_OF_HELP
+"
 
 }
 
@@ -95,7 +95,14 @@ start_web() {
         echo no application running.
     fi
 }
+
     
+if [ -z "$1" ]; then
+
+    usage
+    exit 0
+fi
+
     
 case "$1" in
 
@@ -118,8 +125,10 @@ case "$1" in
     jira|stash|fisheye|bamboo)
         docker stop $1
         docker rm $1
-        start_app $1
-        start_web
+        start_app $1 $2 $3 $4
+        if [ -z "$2" ]; then
+            start_web
+        fi
     ;;
 
     web)
@@ -134,16 +143,22 @@ case "$1" in
         init_db        
     ;;
 
+    dbserver)
+        docker exec -it postgres /bin/bash
+    ;;
+
     data)
         docker run -it --rm --volumes-from="atldata" centos:7 /bin/bash
     ;;
 
     clean)
-        docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+        docker rmi $(docker images | grep "^<none>" | awk ' {print $3} ')
+    ;;
 
     *)
         usage
     ;;
 
 esac 
-       
+
+

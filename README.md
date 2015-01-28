@@ -21,8 +21,3 @@ Fisheye: BASE_URL/fisheye
 Bamboo:  BASE_URL/bamboo
 
 
-### TO DO:
-
-* Setup bamboo....5.7.2
-* improvement: add check existing DB logic into dbinit script and incorporate into run_all.sh
-* add feature of launch container interactively to run.sh

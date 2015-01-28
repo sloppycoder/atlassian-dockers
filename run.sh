@@ -6,7 +6,8 @@ echo "
 
  Usage:
 
-    run.sh all             # startup everything
+    run.sh                 # startup everything
+    run.sh all             # 
 
     run.sh <app>           # stop and remove <app> container, create a new one in background
                            # then restart web server 
@@ -18,9 +19,13 @@ echo "
 
     run.sh  db             # start db server
 
+    run.sh  dbshell        # launch a shell into db server
+
     run.sh  initdb         # drop and recreate database used by applications
 
     run.sh  data           # start an interactive container for examine the shared data volumes
+
+    run.sh  backup <dir>   # backup all data inside data container into <dir>/atldata.tar.gz
 
     run.sh  clean          # remoev all untagged images
 
@@ -102,21 +107,21 @@ case "$ACTION" in
         echo
         echo starting all docker containers for Atlassian Jira, Stash, Fisheye and Bamboo
         echo all images will be downloaded from docker hub for the first time, this will take a while
-        echo hit ctrl-C in next 5 seconds to abort ...
+        echo hit ctrl-C to abort ...
         echo
-        sleep 6
+        sleep 2
 
         start_data
         start_db
-        sleep 3
+        sleep 2
         start_app jira
-        sleep 3
+        sleep 2
         start_app stash
-        sleep 3
+        sleep 2
         start_app fisheye
-        sleep 3
+        sleep 2
         start_app bamboo
-        sleep 3
+        sleep 2
         start_web
 
     ;;
@@ -142,12 +147,19 @@ case "$ACTION" in
         init_db        
     ;;
 
-    dbserver)
+    dbshell)
         docker exec -it postgres /bin/bash
     ;;
 
     data)
         docker run -it --rm --volumes-from="atldata" centos:7 /bin/bash
+    ;;
+
+    backup)
+        BACKUP_DIR=$(readlink -f $2)
+        docker run -it --rm --volumes-from atldata -v $BACKUP_DIR:/backup  sloppycoder/java-base  \
+              tar czvf /backup/atldata.tar.gz \
+                   /opt/atlassian-home /var/lib/postgresql/data 
     ;;
 
     clean)

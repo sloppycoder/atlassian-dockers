@@ -30,4 +30,8 @@ Then point your browser at the URL below to  install license and configuation fo
 
 
 ### TO DO
-1. test more installation scenarios.
+1. add initdb to one line provision.
+2. format this document properly
+3. add docker status check so that docker stop/rm does not throw error messages
+
+

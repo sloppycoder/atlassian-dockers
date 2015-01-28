@@ -21,6 +21,8 @@ parse_base_url() {
 
 }
 
+SERVER_CONFIG=/opt/stash/conf/server.xml
+
 if [ "$1" = "start" ]; then
 
     if [ ! -d "$STASH_HOME" ]; then
@@ -33,28 +35,34 @@ if [ "$1" = "start" ]; then
         CONTEXT_PATH=
     else
         CONTEXT_PATH="/$CONTEXT_PATH"
-        xmlstarlet ed -u '//Context/@path' -v "$CONTEXT_PATH" \
-              /opt/stash/conf/server.xml.orig > /opt/stash/conf/server.xml
     fi
+
+    xmlstarlet ed -u '//Context/@path' -v "$CONTEXT_PATH" ${SERVER_CONFIG}.orig > $SERVER_CONFIG
 
     if [ ! -z "$BASE_URL" ]; then
         
         parse_base_url $BASE_URL
 
-        mv /opt/stash/conf/server.xml /opt/stash/conf/server.xml.tmp
+        COUNT=`xmlstarlet sel -t -v "count(/Server/Service/Connector/@scheme)"  $SERVER_CONFIG`
 
-        # the typo Server1 below is to purposely disable this logic
-        # somehow this causes Stash not able to work via apache server
-        # will fix later
-        xmlstarlet ed --insert "/Server/Service/Connector" --type attr -n scheme -v "$BASE_URL_SCHEME" \
-                      --insert "/Server/Service/Connector" --type attr -n proxyName -v "$BASE_URL_HOST"  \
-                      --insert "/Server/Service/Connector" --type attr -n proxyPort -v "$BASE_URL_PORT"  \
-              /opt/stash/conf/server.xml.tmp > /opt/stash/conf/server.xml
+        mv $SERVER_CONFIG config.tmp
+
+        if [ "$COUNT" = "0" ]; then
+            xmlstarlet ed --insert "/Server/Service/Connector" --type attr -n scheme -v "$BASE_URL_SCHEME" \
+                          --insert "/Server/Service/Connector" --type attr -n proxyName -v "$BASE_URL_HOST"  \
+                          --insert "/Server/Service/Connector" --type attr -n proxyPort -v "$BASE_URL_PORT"  \
+                  config.tmp > $SERVER_CONFIG
+        else 
+            xmlstarlet ed -u "/Server/Service/Connector/@scheme" -v "$BASE_URL_SCHEME" \
+                          -u"/Server/Service/Connector/@proxyName" -v "$BASE_URL_HOST"  \
+                          -u"/Server/Service/Connector/@proxyPort" -v "$BASE_URL_PORT"  \
+                  config.tmp > $SERVER_CONFIG
+        fi
         
-        rm -f /opt/stash/conf/server.xml.tmp
+        rm -f config.tmp
     fi
 
-    chown stash:stash  /opt/stash/conf/server.xml
+    chown stash:stash  $SERVER_CONFIG
     
     exec /usr/local/bin/gosu stash /opt/stash/bin/start-stash.sh -fg
 

@@ -2,13 +2,49 @@
 
 BASEDIR=$(readlink -f $0 | xargs dirname)
 
+usage() {
+
+echo <<END_OF_HELP
+
+ Usage:
+    run.sh all             # startup everything
+
+    run.sh <app>           # stop and remove <app> container, create a new one in background
+                           # then restart web server 
+                           # <app> can be jira, stash, fisheye or bamboo
+
+    run.sh <app> -i <cmd>  # start <app> container in interactive mode, pass <cmd> to docker
+
+    run.sh  web            # restart web server 
+
+    run.sh  db             # start db server
+
+    run.sh  initdb         # drop and recreate database used by applications
+
+    run.sh  data           # start an interactive container for examine the shared data volumes
+
+    run.sh  clean          # remoev all untagged images
+
+
+END_OF_HELP
+
+}
+
 start_app() {
-    docker run -d --name $1 --link postgres:db \
+
+    if [ "$2" = "-i" ]; then
+        RUN_MODE="-it"
+    else 
+        RUN_MODE="-d"
+    fi
+
+    docker run $RUN_MODE --name $1 --link postgres:db \
         --volumes-from="atldata" -e BASE_URL=$BASE_URL \
-        sloppycoder/atl-$1
+        sloppycoder/atl-$1 $3
 }
 
 start_db() {
+
     docker stop postgres
     docker rm postgres
     docker run -d --name postgres -e POSTGRES_PASSWORD=password \
@@ -16,10 +52,12 @@ start_db() {
 }
 
 init_db() {
+
     cat dbinit.sh | docker run --rm -i --link postgres:db postgres:9.3 bash -
 }
 
 start_data() {
+
     docker run --name atldata \
         -v /opt/atlassian-home \
         -v /var/lib/postgresql/data \
@@ -27,6 +65,7 @@ start_data() {
 }
 
 start_web() {
+
     docker stop atlweb
     docker rm atlweb
 
@@ -56,6 +95,7 @@ start_web() {
         echo no application running.
     fi
 }
+    
     
 case "$1" in
 
@@ -102,7 +142,8 @@ case "$1" in
         docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
 
     *)
-        echo "please specify an application or all for startup everything"
+        usage
     ;;
+
 esac 
        

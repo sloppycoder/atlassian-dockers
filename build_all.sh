@@ -14,3 +14,7 @@ cd atl-fisheye
 ./build.sh
 cd ..
 
+cd atl-bamboo
+./build.sh
+cd ..
+

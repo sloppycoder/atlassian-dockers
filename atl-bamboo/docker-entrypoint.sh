@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -o errexit
 umask 0027
 
@@ -20,24 +21,22 @@ parse_base_url() {
 
 }
 
-SERVER_CONFIG=/opt/jira/conf/server.xml
+SERVER_CONFIG=/opt/bamboo/conf/server.xml
 
 if [ "$1" = "start" ]; then
 
-    if [ ! -d "$JIRA_HOME" ]; then
-        mkdir -p $JIRA_HOME
+    if [ ! -d "$BAMBOO_HOME" ]; then
+        mkdir -p $BAMBOO_HOME
     fi
 
-    chown -R jira:jira $JIRA_HOME
+    chown -R bamboo:bamboo $BAMBOO_HOME
 
-    rm -f $JIRA_HOME/.jira-home.lock
-
-   if [ "$CONTEXT_PATH" == "ROOT" -o -z "$CONTEXT_PATH" ]; then
+    if [ "$CONTEXT_PATH" == "ROOT" -o -z "$CONTEXT_PATH" ]; then
         CONTEXT_PATH=
     else
         CONTEXT_PATH="/$CONTEXT_PATH"
     fi
-    
+
     xmlstarlet ed -u '//Context/@path' -v "$CONTEXT_PATH" ${SERVER_CONFIG}.orig > $SERVER_CONFIG
 
     if [ ! -z "$BASE_URL" ]; then
@@ -63,10 +62,11 @@ if [ "$1" = "start" ]; then
         rm -f config.tmp
     fi
 
-
-    chown jira:jira  $SERVER_CONFIG
+    chown bamboo:bamboo  $SERVER_CONFIG
     
-    exec /usr/local/bin/gosu jira /opt/jira/bin/start-jira.sh -fg
+    exec /usr/local/bin/gosu bamboo /opt/bamboo/bin/catalina.sh run
+    # below line does not work as it somehow get $0 of gosu
+    exec /usr/local/bin/gosu bamboo /opt/bamboo/bin/start-bamboo.sh -fg
 
 fi
 

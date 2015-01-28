@@ -2,7 +2,7 @@
 
 set -o errexit
 
-TAG="sloppycoder/atl-jira"
+TAG="sloppycoder/atl-bamboo"
 
 docker build --rm --tag ${TAG}:latest .
 

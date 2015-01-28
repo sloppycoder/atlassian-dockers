@@ -1,3 +1,16 @@
-docker build --rm --tag sloppycoder/atl-stash:latest .
-docker tag sloppycoder/atl-stash:latest sloppycoder/atl-stash:3.6.1
 
+#!/bin/bash
+
+set -o errexit
+
+TAG="sloppycoder/atl-stash"
+
+docker build --rm --tag ${TAG}:latest .
+
+VERSION_STRING=`docker inspect  -f '{{ index .ContainerConfig.Env 2 }}' ${TAG}:latest `
+VERSION=`echo $VERSION_STRING | awk ' { match($0, ".*=(.*)", a) } END { print a[1] }' `
+
+if [ ! -z "$VERSION" ]; then
+    echo tagging $VERSION
+    docker tag ${TAG}:latest ${TAG}:${VERSION}
+fi 

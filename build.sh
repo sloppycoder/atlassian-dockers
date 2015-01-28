@@ -1,5 +1,5 @@
 cd java-base
-#./build.sh
+./build.sh
 cd ..
 
 cd atl-jira
@@ -15,6 +15,10 @@ cd atl-fisheye
 cd ..
 
 cd atl-bamboo
+./build.sh
+cd ..
+
+cd atl-web
 ./build.sh
 cd ..
 

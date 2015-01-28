@@ -1,7 +1,5 @@
 #! /bin/bash
 
-BASEDIR=$(readlink -f $0 | xargs dirname)
-
 usage() {
 
 echo "
@@ -85,28 +83,29 @@ start_web() {
        LINKS="$LINKS --link bamboo:bamboo"
     fi
 
-    if [ ! -z "$LINKS" ]; then 
-        echo starting httpd with links $LINKS
-        docker run -d --name atlweb -p 80:80 -p 443:443 \
-           -v $BASEDIR/httpd24-conf:/usr/local/apache2/conf \
-           $LINKS \
-           httpd:2.4
-    else  
-        echo no application running.
-    fi
+    echo starting httpd with links $LINKS
+    docker run -d --name atlweb -p 80:80 -p 443:443 \
+       $LINKS \
+       sloppycoder/atl-web
+
+    test -z "$LINKS" && echo httpd started but no application running.
 }
 
     
-if [ -z "$1" ]; then
-
-    usage
-    exit 0
-fi
-
+ACTION=$1
+test -z "$ACTION" && ACTION=all
     
-case "$1" in
+case "$ACTION" in
 
     all)
+        echo
+        echo
+        echo starting all docker containers for Atlassian Jira, Stash, Fisheye and Bamboo
+        echo all images will be downloaded from docker hub for the first time, this will take a while
+        echo hit ctrl-C in next 5 seconds to abort ...
+        echo
+        sleep 6
+
         start_data
         start_db
         sleep 3

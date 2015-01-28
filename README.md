@@ -15,7 +15,7 @@ The easiest way to build all images, then start all containers and make all appl
 
 ```
 ./build_all.sh
-BASE_URL=http://127.0.0.1:8000 ./run_all.sh
+BASE_URL=http://127.0.0.1:8000 ./run.sh all
 
 ```
 
@@ -31,3 +31,5 @@ Bamboo:   BASE_URL/bamboo
 
 * Setup bamboo....5.7.2
 * improvement: add check existing DB logic into dbinit script and incorporate into run_all.sh
+* add feature of launch container interactively to run.sh
+

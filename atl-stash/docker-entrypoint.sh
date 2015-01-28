@@ -21,7 +21,7 @@ parse_base_url() {
 
 }
 
-SERVER_CONFIG= /opt/stash/conf/server.xml
+SERVER_CONFIG=/opt/stash/conf/server.xml
 
 if [ "$1" = "start" ]; then
 
@@ -43,19 +43,19 @@ if [ "$1" = "start" ]; then
         
         parse_base_url $BASE_URL
 
-        mv $SERVER_CONFIG config.tmp
-
         COUNT=`xmlstarlet sel -t -v "count(/Server/Service/Connector/@scheme)"  $SERVER_CONFIG`
 
-        if [ "$COUNT" = "0"]; then
+        mv $SERVER_CONFIG config.tmp
+
+        if [ "$COUNT" = "0" ]; then
             xmlstarlet ed --insert "/Server/Service/Connector" --type attr -n scheme -v "$BASE_URL_SCHEME" \
                           --insert "/Server/Service/Connector" --type attr -n proxyName -v "$BASE_URL_HOST"  \
                           --insert "/Server/Service/Connector" --type attr -n proxyPort -v "$BASE_URL_PORT"  \
                   config.tmp > $SERVER_CONFIG
         else 
-            xmlstarlet ed --upadte "/Server/Service/Connector/@scheme" -v "$BASE_URL_SCHEME" \
-                          --update "/Server/Service/Connector/@proxyName" -v "$BASE_URL_HOST"  \
-                          --update "/Server/Service/Connector/@proxyPort" -v "$BASE_URL_PORT"  \
+            xmlstarlet ed -u "/Server/Service/Connector/@scheme" -v "$BASE_URL_SCHEME" \
+                          -u"/Server/Service/Connector/@proxyName" -v "$BASE_URL_HOST"  \
+                          -u"/Server/Service/Connector/@proxyPort" -v "$BASE_URL_PORT"  \
                   config.tmp > $SERVER_CONFIG
         fi
         

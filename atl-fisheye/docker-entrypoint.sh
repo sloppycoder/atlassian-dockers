@@ -64,7 +64,7 @@ if [ "$1" = "start" ]; then
 
     /opt/fecru-${FISHEYE_VERSION}/bin/start.sh
 
-    exec tail -f /opt/atlassian-home/fisheye/var/log/fisheye.out
+    exec tail -f $FISHEYE_INST/var/log/fisheye.out
     
 fi
 

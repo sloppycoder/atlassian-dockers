@@ -109,13 +109,13 @@ case "$ACTION" in
         start_data
         start_db
         sleep 3
-        start_app sloppycoder/atl-jira
+        start_app jira
         sleep 3
-        start_app sloppycoder/atl-stash
+        start_app stash
         sleep 3
-        start_app sloppycoder/atl-fisheye
+        start_app fisheye
         sleep 3
-        start_app sloppycoder/atl-bamboo
+        start_app bamboo
         sleep 3
         start_web
 

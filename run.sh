@@ -36,7 +36,7 @@ echo "
 
 is_container_running() {
 
-    if [ "`docker inspect -f '{{ .State.Running }}' $1 `" = "true" ]; then
+    if [ "`docker inspect -f '{{ .State.Running }}' $1 2> /dev/null `" = "true" ]; then
         return 1
     else
         return 0
@@ -46,8 +46,8 @@ is_container_running() {
 
 stop_and_rm_container() {
 
-    is_container_running $1 && docker stop $1
-    (docker ps -a | grep $1) || docker rm $1
+    is_container_running $1 || docker stop $1
+    (docker ps -a | grep $1 > /dev/null) && docker rm $1
 }
 
 
@@ -59,8 +59,9 @@ start_app() {
         RUN_MODE="-d"
     fi
 
-    # start data container if it does not exist
-    (docker ps -a | grep atldata) && start_data
+    stop_and_rm_container $1
+
+    start_data
 
     docker run $RUN_MODE --name $1 --link postgres:db \
         --volumes-from="atldata" -e BASE_URL=$BASE_URL \
@@ -71,17 +72,20 @@ start_app() {
 start_db() {
 
     stop_and_rm_container postgres
+
+    start_data
+
     docker run -d --name postgres -e POSTGRES_PASSWORD=password \
         --volumes-from="atldata" ${DOCKER_HUB_USER}/atl-postgres
 }
 
 
 start_data() {
-    (docker ps -a | grep atldata) && \
+    (docker ps -a | grep atldata > /dev/null) || \
         docker run --name atldata \
             -v /opt/atlassian-home \
             -v /var/lib/postgresql/data \
-            centos:7 echo "data container atldata started"
+            centos:7 echo atldata container
 }
 
 
@@ -143,6 +147,7 @@ case "$ACTION" in
         stop_and_rm_container $1
         start_app $1 $2 $3 $4
         test -z "$2" && start_web
+
     ;;
 
     web)

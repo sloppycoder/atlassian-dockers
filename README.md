@@ -23,15 +23,12 @@ BASE_URL=http://127.0.0.1:8000 ./run.sh
 
 Then point your browser at the URL below to  install license and configuation for each applicaiton:
 
-| JIRA      | BASE_URL/jira     |
-| Stash     | BASE_URL/stash    |
-| Fisheye   | BASE_URL/fisheye  |
-| Bamboo    | BASE_URL/bamboo   |
+| Application   |  URL                |
+|---------------|---------------------|
+|  JIRA         | BASE_URL/jira       |
+|  Stash        | BASE_URL/stash      |
+| Fisheye       | BASE_URL/fisheye    |
+| Bamboo        | BASE_URL/bamboo     |
 
-
-### TO DO
-1. add initdb to one line provision.
-2. format this document properly
-3. add docker status check so that docker stop/rm does not throw error messages
 
 

@@ -18,6 +18,11 @@ cd atl-bamboo
 ./build.sh
 cd ..
 
+cd atl-postgres
+./build.sh
+cd ..
+
+
 cd atl-web
 ./build.sh
 cd ..

@@ -37,16 +37,16 @@ echo "
 is_container_running() {
 
     if [ "$(docker inspect -f '{{ .State.Running }}' $1 2> /dev/null)" = "true" ]; then
-        return 1
-    else
         return 0
+    else
+        return 1
     fi
 }
 
 
 stop_and_rm_container() {
 
-    is_container_running $1 || docker stop $1
+    is_container_running $1 && docker stop $1
     ( docker ps -a | grep -q $1 ) && docker rm $1
 }
 

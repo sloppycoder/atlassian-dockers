@@ -6,10 +6,10 @@ set -o errexit
 
 (
     cd java-base
-    #docker build --rm --tag sloppycoder/java-base .
+    docker build --rm --tag sloppycoder/java-base .
 )
 
-for MODULE in $(ls -d atl-bamboo*)
+for MODULE in $(ls -d atl-*)
 do
 (
     echo building $MODULE

@@ -36,7 +36,7 @@ echo "
 
 is_container_running() {
 
-    if [ "`docker inspect -f '{{ .State.Running }}' $1 2> /dev/null `" = "true" ]; then
+    if [ "$(docker inspect -f '{{ .State.Running }}' $1 2> /dev/null)" = "true" ]; then
         return 1
     else
         return 0
@@ -47,17 +47,13 @@ is_container_running() {
 stop_and_rm_container() {
 
     is_container_running $1 || docker stop $1
-    (docker ps -a | grep $1 > /dev/null) && docker rm $1
+    ( docker ps -a | grep -q $1 ) && docker rm $1
 }
 
 
 start_app() {
 
-    if [ "$2" = "-i" ]; then
-        RUN_MODE="-it"
-    else 
-        RUN_MODE="-d"
-    fi
+    [ "$2" = "-i" ] && RUN_MODE="-it" ||  RUN_MODE="-d"
 
     stop_and_rm_container $1
 
@@ -81,7 +77,7 @@ start_db() {
 
 
 start_data() {
-    (docker ps -a | grep atldata > /dev/null) || \
+    (docker ps -a | grep -q atldata ) || \
         docker run --name atldata \
             -v /opt/atlassian-home \
             -v /var/lib/postgresql/data \
@@ -102,13 +98,13 @@ start_web() {
        $LINKS \
        ${DOCKER_HUB_USER}/atl-web
 
-    test -z "$LINKS" && echo httpd started but no application running.
+    [ -z "$LINKS" ] && echo httpd started but no application running.
 }
 
 
     
 ACTION=$1
-test -z "$ACTION" && ACTION=all
+[ -z "$ACTION" ] && ACTION=all
     
 case "$ACTION" in
 
@@ -146,7 +142,7 @@ case "$ACTION" in
         
         stop_and_rm_container $1
         start_app $1 $2 $3 $4
-        test -z "$2" && start_web
+        [ -z "$2" ] && start_web
 
     ;;
 

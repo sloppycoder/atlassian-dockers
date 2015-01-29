@@ -1,29 +1,36 @@
-cd java-base
-./build.sh
-cd ..
+#!/bin/bash
 
-cd atl-jira
-./build.sh
-cd ..
+set -o errexit
 
-cd atl-stash
-./build.sh
-cd ..
+# build all the images
 
-cd atl-fisheye
-./build.sh
-cd ..
+(
+    cd java-base
+    #docker build --rm --tag sloppycoder/java-base .
+)
 
-cd atl-bamboo
-./build.sh
-cd ..
+for MODULE in $(ls -d atl-bamboo*)
+do
+(
+    echo building $MODULE
+    cd $MODULE
+    TAG="sloppycoder/$MODULE"
 
-cd atl-postgres
-./build.sh
-cd ..
+    docker build --rm --tag ${TAG}:latest .
 
+    case "$MODULE" in
 
-cd atl-web
-./build.sh
-cd ..
+        atl-jira|atl-stash|atl-bamboo|atl-fisheye)
 
+            ENV_STRING="$(docker inspect  -f '{{ index .ContainerConfig.Env 2 }}' ${TAG}:latest )" 
+            VERSION="$(echo $ENV_STRING | awk ' { match($0, ".*=(.*)", a) } END { print a[1] }')"
+
+            [ -z "$VERSION" ] || docker tag ${TAG}:latest ${TAG}:${VERSION}
+        ;;
+
+        *)
+
+        ;;
+     esac
+)
+done

@@ -31,4 +31,15 @@ Then point your browser at the URL below to  install license and configuation fo
 | Bamboo        | BASE_URL/bamboo     |
 
 
+### Test with boot2docker and Amazon EC2 instance
 
+#### boot2docker with Parallels on Mac
+
+```
+cd vagrant/paralles
+vagrant up
+```
+should work for most people. 
+
+#### Amazon EC2 instance with Amazon Linux AMI (HVM)
+Before ```vagrant up``` please check the Vagrantfile to make sure it contains the configuration you want, especially the aws version should updated with your access key, region, VPC subnet_id etc in order to work correectly. 

@@ -3,5 +3,9 @@
 *.log
 *.*~
 tmp/*
+.*
 
-
+# Vagrantfile tend to contain person settings, so it is better to exclude them
+# so that personally information like AWS access key does not get committed by 
+# accident. 
+vagrant/

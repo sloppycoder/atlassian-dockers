@@ -1,0 +1,2 @@
+export DOCKER_HOST_IP=$(vagrant ssh-config | grep HostName | awk '{print $2}')
+export DOCKER_HOST="tcp://${DOCKER_HOST_IP}:2375"

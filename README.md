@@ -42,4 +42,4 @@ vagrant up
 should work for most people. 
 
 #### Amazon EC2 instance with Amazon Linux AMI (HVM)
-Before ```vagrant up``` please check the Vagrantfile to make sure it contains the configuration you want, especially the aws version should updated with your access key, region, VPC subnet_id etc in order to work correectly. 
+Before ```vagrant up``` please check the Vagrantfile to make sure it contains the configuration you want, especially the your access key, region, VPC subnet_id etc in order to work correctly. 

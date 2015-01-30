@@ -107,7 +107,7 @@ ACTION=$1
 
 # when this script is piped into /bin/bash as describe in README.md
 # it'll boot up all components
-if [ -t 1 ]; then
+if [ ! -t 0 ]; then
 
     ACTION=all 
     

@@ -104,37 +104,35 @@ start_web() {
 
     
 ACTION=$1
-[ -z "$ACTION" ] && ACTION=all
+
+# when this script is piped into /bin/bash as describe in README.md
+# it'll boot up all components
+if [ -t 1 ]; then
+
+    ACTION=all 
+    
+    echo
+    echo starting all docker containers for Atlassian Jira, Stash, Fisheye and Bamboo
+    echo all images will be downloaded from docker hub for the first time, this will take a while.
+    echo 
+    echo hit ctrl-C to abort ...
+    echo
+    sleep 2
+
+fi
+
+
     
 case "$ACTION" in
 
     all)
-        echo
-        echo use 
-        echo      run.sh -h
-        echo 
-        echo to see other options available in this command
-        echo 
-        echo
-        echo starting all docker containers for Atlassian Jira, Stash, Fisheye and Bamboo
-        echo all images will be downloaded from docker hub for the first time, this will take a while.
-        echo 
-        echo hit ctrl-C to abort ...
-        echo
-        sleep 2
-
         start_data
         start_db
-        sleep 2
         start_app jira
-        sleep 2
         start_app stash
-        sleep 2
         start_app fisheye
-        sleep 2
         start_app bamboo
-        sleep 2
-        start_web
+        sleep 2 && start_web
 
     ;;
 

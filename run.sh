@@ -8,7 +8,6 @@ echo "
 
  Usage:
 
-    run.sh                 # startup everything
     run.sh all             # 
 
     run.sh <app>           # stop and remove <app> container, create a new one in background
@@ -77,6 +76,7 @@ start_db() {
 
 
 start_data() {
+
     (docker ps -a | grep -q atldata ) || \
         docker run --name atldata \
             -v /opt/atlassian-home \
@@ -140,6 +140,7 @@ case "$ACTION" in
         
         stop_and_rm_container $1
         start_app $1 $2 $3 $4
+        # start web browser if container not launched run.sh <app> -i <cmd>
         [ -z "$2" ] && start_web
 
     ;;

@@ -2,7 +2,7 @@
 #   read AWS credential from .aws/config, then fallback to ENV variable
 #
 
-ENV['VAGRANT_DEFAULT_PROVIDER'] = 'aws'
+ENV["VAGRANT_DEFAULT_PROVIDER"] = "aws"
 
 $script = <<SCRIPT
   yum update -y
@@ -33,18 +33,18 @@ Vagrant.configure(2) do |config|
 
     # storage, default volume size is 8GB 
     aws.block_device_mapping = [
-      { 'DeviceName' => '/dev/xvda', 'Ebs.VolumeSize' => 8 }
+      { "DeviceName" => "/dev/xvda", "Ebs.VolumeSize" => 8 }
       ]      
 
     aws.tags = {
-      'Name' => 'test',
+      "Name" => "docker-test",
      }
 
     override.ssh.username = "ec2-user"
     override.ssh.private_key_path = "~/.ssh/id_rsa"
 
     # to avoid error like "No host IP was given to the Vagrant core NFS helper."
-    config.vm.synced_folder '.', '/vagrant', disabled: true
+    config.vm.synced_folder ".", "/vagrant", disabled: true
 
     # Amazon Linux sudo requires tty
     config.ssh.pty = true

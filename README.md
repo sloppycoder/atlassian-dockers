@@ -31,7 +31,7 @@ Then point your browser at the URL below to  install license and configuation fo
 | Bamboo        | BASE_URL/bamboo     |
 
 
-### Test with boot2docker and Amazon EC2 instance
+### Test with boot2docker, Amazon EC2 instance and Google Compute Enginge
 
 #### boot2docker with Parallels on Mac
 
@@ -43,3 +43,7 @@ should work for most people.
 
 #### Amazon EC2 instance with Amazon Linux AMI (HVM)
 Before ```vagrant up``` please check the Vagrantfile to make sure it contains the configuration you want, especially the your access key, region, VPC subnet_id etc in order to work correctly. 
+
+#### Google Compute Engine with image "entos-7-v20150127"
+Before ```vagrant up``` please check the Vagrantfile to make sure it contains the configuration you want, especially the your aproject id, access client email and key location. For ssh access to the instance, please upload your ssh key via console before spin up the instance. see (GCE documentation)[https://cloud.google.com/compute/docs/console#sshkeys] for details. more references in (this GitHub issue)[https://github.com/mitchellh/vagrant-google/issues/23]
+ 

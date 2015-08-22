@@ -130,7 +130,7 @@ case "$ACTION" in
         start_db
         start_app jira
         start_app stash
-        start_app fisheye
+ #       start_app fisheye
         start_app bamboo
         sleep 2 && start_web
 

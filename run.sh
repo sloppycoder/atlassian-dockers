@@ -108,7 +108,7 @@ start_web() {
 
     echo starting httpd with links $LINKS
     stop_and_rm_container atlweb
-    docker run -d --name atlweb 
+    docker run -d --name atlweb \
        $PORTS \
        $LINKS \
        ${DOCKER_HUB_USER}/atl-web

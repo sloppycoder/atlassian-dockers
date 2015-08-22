@@ -26,8 +26,7 @@ do
             VERSION="$(echo $ENV_STRING | cut -d '=' -f 2 )"
 
             if [ ! -z "$VERSION" ]; then
-                docker rmi ${TAG}:${VERSION}
-                docker tag ${TAG}:latest ${TAG}:${VERSION}
+                docker tag -f ${TAG}:latest ${TAG}:${VERSION}
             fi
         ;;
 

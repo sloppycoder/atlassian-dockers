@@ -23,9 +23,12 @@ do
         atl-jira|atl-stash|atl-bamboo|atl-fisheye)
 
             ENV_STRING="$(docker inspect  -f '{{ index .ContainerConfig.Env 2 }}' ${TAG}:latest )" 
-            VERSION="$(echo $ENV_STRING | awk ' { match($0, ".*=(.*)", a) } END { print a[1] }')"
+            VERSION="$(echo $ENV_STRING | cut -d '=' -f 2 )"
 
-            [ -z "$VERSION" ] || docker tag ${TAG}:latest ${TAG}:${VERSION}
+            if [ ! -z "$VERSION" ]; then
+                docker rmi ${TAG}:${VERSION}
+                docker tag ${TAG}:latest ${TAG}:${VERSION}
+            fi
         ;;
 
         *)

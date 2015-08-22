@@ -2,9 +2,10 @@
 
 This image is intended to run Java based applications. It is based on Centos:7 and added following components:
 
-* Oracle JDK8u31
+* Oracle JDK8u60
 * [gosu](https://github.com/tianon/gosu)
 * git
+* jq
 * subversion
 * mercurial
 * net-tools (netstat etc.)

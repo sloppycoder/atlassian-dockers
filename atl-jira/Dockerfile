@@ -2,7 +2,7 @@ FROM sloppycoder/java-base
 MAINTAINER Li Lin <guru.lin@gmail.com>
 
 # Download and extract Jira
-ENV JIRA_VERSION 6.3.14
+ENV JIRA_VERSION 6.4.10
 RUN curl -Lks http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${JIRA_VERSION}.tar.gz \
          -o /root/jira.tar.gz \
       && mkdir /opt/jira \

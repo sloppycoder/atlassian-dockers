@@ -2,7 +2,7 @@ FROM sloppycoder/java-base
 MAINTAINER Li Lin <guru.lin@gmail..com>
 
 # Download and extract Bamboo
-ENV BAMBOO_VERSION 5.7.2
+ENV BAMBOO_VERSION 5.9.4
 RUN curl -Lks http://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-${BAMBOO_VERSION}.tar.gz \
          -o /root/bamboo.tar.gz \
       && mkdir /opt/bamboo \

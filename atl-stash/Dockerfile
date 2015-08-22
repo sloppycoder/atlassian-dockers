@@ -2,7 +2,7 @@ FROM sloppycoder/java-base
 MAINTAINER Li Lin <guru.lin@gmail..com>
 
 # Download and extract Stash 
-ENV STASH_VERSION 3.6.1
+ENV STASH_VERSION 3.11.2
 RUN curl -Lks http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${STASH_VERSION}.tar.gz \
          -o /root/stash.tar.gz \
       && mkdir /opt/stash \

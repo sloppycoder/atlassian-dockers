@@ -2,7 +2,7 @@ FROM sloppycoder/java-base
 MAINTAINER Li Lin <guru.lin@gmail..com>
 
 # Install Fisheye
-ENV FISHEYE_VERSION 3.7.0
+ENV FISHEYE_VERSION 3.9.0
 RUN curl -Lks http://www.atlassian.com/software/fisheye/downloads/binary/fisheye-${FISHEYE_VERSION}.zip \
          -o /root/fisheye.zip \
       && unzip -q /root/fisheye.zip -d /opt \

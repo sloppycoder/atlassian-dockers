@@ -9,6 +9,11 @@ set -o errexit
     docker build --rm --tag sloppycoder/java-base .
 )
 
+(
+    cd atl-postgres
+    docker build --rm --tag sloppycoder/atl-postgres .
+)
+
 for MODULE in $(ls -d atl-*)
 do
 (

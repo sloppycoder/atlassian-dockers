@@ -5,19 +5,8 @@ umask 0027
 
 parse_base_url() {
 
-    BASE_URL_SCHEME=`echo $1 |  awk ' { match($0,"(.*)://([0-9a-zA-Z\.]*):?([0-9]*)?",a) }  END { print a[1] }' `  
-    BASE_URL_HOST=`echo $1   |  awk ' { match($0,"(.*)://([0-9a-zA-Z\.]*):?([0-9]*)?",a) }  END { print a[2] }' `  
-    BASE_URL_PORT=`echo $1   |  awk ' { match($0,"(.*)://([0-9a-zA-Z\.]*):?([0-9]*)?",a) }  END { print a[3] }' `  
-
-    if [ -z "$BASE_URL_PORT" ]; then
-        BASE_URL_PORT=80
-    fi
-
-    echo === parse_base_url debug ===
-    echo BASE_URL=$1
-    echo BASE_URL_SCHEME=$BASE_URL_SCHEME
-    echo BASE_URL_HOST=$BASE_URL_HOST
-    echo BASE_URL_PORT=$BASE_URL_PORT
+    BASE_DIR=`dirname $0`
+    $($BASE_DIR/parse_base_url.py $1)
 
 }
 

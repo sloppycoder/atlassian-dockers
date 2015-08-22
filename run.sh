@@ -87,6 +87,20 @@ start_data() {
 
 start_web() {
 
+    BASE_DIR=`dirname $0`
+    $($BASE_DIR/parse_base_url.py $BASE_URL)
+
+    if [ -z "$BASE_URL_SCHEME" ]; then
+        BASE_URL_SCHEME="http"
+        BASE_URL_PORT="80"
+    fi
+    
+    if [ "$BASE_URL_SCHEME" = "http" ]; then
+        PORTS="-p $BASE_URL_PORT:80"
+    else
+        PORTS="-p $BASE_URL_PORT:443"
+    fi
+
     is_container_running jira && LINKS="$LINKS --link jira:jira"
     is_container_running stash && LINKS="$LINKS --link stash:stash"
     is_container_running fisheye && LINKS="$LINKS --link fisheye:fisheye"
@@ -94,7 +108,8 @@ start_web() {
 
     echo starting httpd with links $LINKS
     stop_and_rm_container atlweb
-    docker run -d --name atlweb -p 80:80 -p 443:443 \
+    docker run -d --name atlweb 
+       $PORTS \
        $LINKS \
        ${DOCKER_HUB_USER}/atl-web
 

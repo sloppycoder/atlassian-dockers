@@ -13,6 +13,7 @@ RUN /usr/sbin/groupadd atlassian \
       && chown -R fisheye:fisheye /opt/fecru-${FISHEYE_VERSION}
 
 ADD ./docker-entrypoint.sh /
+ADD ./parse_base_url.py /
 VOLUME ["/opt/atlassian-home"]
 
 ENV FISHEYE_INST /opt/atlassian-home/fisheye

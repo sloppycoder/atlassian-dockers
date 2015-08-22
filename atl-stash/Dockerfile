@@ -17,6 +17,7 @@ RUN /usr/sbin/groupadd atlassian \
       && chown -R stash:stash /opt/stash
 
 ADD ./docker-entrypoint.sh /
+ADD ./parse_base_url.py /
 VOLUME ["/opt/atlassian-home"]
 
 ENV STASH_HOME /opt/atlassian-home/stash

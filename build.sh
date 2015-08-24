@@ -10,6 +10,11 @@ set -o errexit
 )
 
 (
+    cd atl-web
+    docker build --rm --tag sloppycoder/atl-web .
+)
+
+(
     cd atl-postgres
     docker build --rm --tag sloppycoder/atl-postgres .
 )
@@ -27,7 +32,7 @@ do
 
         atl-jira|atl-stash|atl-bamboo|atl-fisheye)
 
-            ENV_STRING="$(docker inspect  -f '{{ index .ContainerConfig.Env 2 }}' ${TAG}:latest )" 
+            ENV_STRING="$(docker inspect  -f '{{ index .ContainerConfig.Env 5 }}' ${TAG}:latest )" 
             VERSION="$(echo $ENV_STRING | cut -d '=' -f 2 )"
 
             if [ ! -z "$VERSION" ]; then

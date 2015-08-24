@@ -17,7 +17,6 @@ RUN /usr/sbin/groupadd atlassian \
       && chown -R jira:jira /opt/jira 
 
 ADD ./docker-entrypoint.sh /
-ADD ./parse_base_url.py /
 VOLUME ["/opt/atlassian-home"]
 
 ENV JIRA_HOME /opt/atlassian-home/jira

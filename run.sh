@@ -58,6 +58,7 @@ start_app() {
 
     start_data
 
+    echo starting $1
     docker run $RUN_MODE --name $1 --link postgres:db \
         --volumes-from="atldata" -e BASE_URL=$BASE_URL \
         ${DOCKER_HUB_USER}/atl-$1 $3
@@ -81,7 +82,7 @@ start_data() {
         docker run --name atldata \
             -v /opt/atlassian-home \
             -v /var/lib/postgresql/data \
-            centos:7 echo atldata container
+            busybox echo atldata container
 }
 
 
@@ -186,7 +187,7 @@ case "$ACTION" in
 
     datash)
 
-        docker run -it --rm --volumes-from="atldata" centos:7 /bin/bash
+        docker run -it --rm --volumes-from="atldata" sloppycoder/jre-base /bin/bash
 
     ;;
 

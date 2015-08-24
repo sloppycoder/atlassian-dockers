@@ -36,8 +36,6 @@ Then point your browser at the URL below to  install license and configuation fo
 
 To use the postgres database, use __db__ as host name, postgres as username and password as passord. Database name is same as application name, e.g jira, stash, bamboo, fisheye.
 
-### Known issues
-1. Seems to have issue with Docker 1.8.1 with boot2docker image in OS X Yosemite. Though things work fine in Docker 1.6.2 on Amazon linux.
 
 ### Test with boot2docker, Amazon EC2 instance and Google Compute Enginge
 

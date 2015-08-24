@@ -1,6 +1,8 @@
 FROM sloppycoder/java-base
 MAINTAINER Li Lin <guru.lin@gmail..com>
 
+RUN apt-get update  && apt-get install -y git && rm -rf /var/lib/apt/lists/* 
+
 # Download and extract Stash 
 ENV STASH_VERSION 3.11.2
 RUN curl -Lks http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${STASH_VERSION}.tar.gz \
@@ -17,7 +19,6 @@ RUN /usr/sbin/groupadd atlassian \
       && chown -R stash:stash /opt/stash
 
 ADD ./docker-entrypoint.sh /
-ADD ./parse_base_url.py /
 VOLUME ["/opt/atlassian-home"]
 
 ENV STASH_HOME /opt/atlassian-home/stash

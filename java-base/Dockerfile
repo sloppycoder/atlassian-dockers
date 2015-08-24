@@ -15,14 +15,12 @@ RUN yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-
 RUN yum update -y  \
       && yum install -y   \
                bzip2      \
-               git        \
+               java-1.8.0-openjdk-headless \
                jq         \
-               mercurial  \
                net-tools  \
                p7zip      \
-               subversion \
                tar        \
-               tcpdump    \
+               telnet     \
                unzip      \
                xml2       \
                xmlstarlet \
@@ -34,20 +32,6 @@ RUN yum update -y  \
       && gpg --verify /usr/local/bin/gosu.asc \
       && rm /usr/local/bin/gosu.asc \
       && chmod +x /usr/local/bin/gosu
-
-# install Oracle JDK8, remove some files we don't need to reduce image size
-RUN curl -Lks -H "Cookie: oraclelicense=accept-securebackup-cookie" \
-         http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.rpm \ 
-         -o /root/jdk8.rpm \
-      && yum --nogpgcheck -y localinstall /root/jdk8.rpm \
-      && rm /root/jdk8.rpm \
-      && rm -rf /usr/java/jdk1.8.0_60/*src*.zip \
-                /usr/java/jdk1.8.0_60/lib/visualvm \
-                /usr/java/jdk1.8.0_60/lib/missioncontrol \
-                /usr/java/jdk1.8.0_60/bin/jmc* \
-                /usr/java/jdk1.8.0_60/bin/jvisualvm
-
-ENV JAVA_HOME /usr/java/default
 
 CMD ["/bin/bash", "--login"]
 

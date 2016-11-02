@@ -4,7 +4,7 @@ MAINTAINER Li Lin <guru.lin@gmail..com>
 RUN apt-get update  && apt-get install -y git && rm -rf /var/lib/apt/lists/* 
 
 # Download and extract Stash 
-ENV STASH_VERSION 3.11.2
+ENV STASH_VERSION 3.11.4
 RUN curl -Lks http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${STASH_VERSION}.tar.gz \
          -o /root/stash.tar.gz \
       && mkdir /opt/stash \

@@ -30,7 +30,7 @@ do
 
     case "$MODULE" in
 
-        atl-jira|atl-stash|atl-bamboo|atl-fisheye)
+        atl-jira|atl-stash|atl-bamboo)
 
             ENV_STRING="$(docker inspect  -f '{{ index .ContainerConfig.Env 5 }}' ${TAG}:latest )" 
             VERSION="$(echo $ENV_STRING | cut -d '=' -f 2 )"

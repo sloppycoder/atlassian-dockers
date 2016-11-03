@@ -10,8 +10,8 @@ version: '2'
 services:
   db:
     image: sloppycoder/atl-postgres
-    depends_on:
-      - db
+    volumes:
+      - /data/postgres:/var/lib/postgresql/data
     networks:
       - default
 
@@ -21,6 +21,8 @@ services:
       - BASE_URL=$BASE_URL
     depends_on:
       - db
+    volumes:
+      - /data/atlassian-home:/opt/atlassian-home
     networks:
       - default
     ports:
@@ -30,6 +32,8 @@ services:
     image: sloppycoder/atl-stash
     environment:
       - BASE_URL=$BASE_URL
+    volumes:
+      - /data/atlassian-home:/opt/atlassian-home
     depends_on:
       - db
     networks:
@@ -37,17 +41,13 @@ services:
     ports:
       - "7990:7990"
 
-  bamboo:
-    image: sloppycoder/atl-bamboo
-    environment:
-      - BASE_URL=$BASE_URL
-    depends_on:
-      - db
-    networks:
-      - default
-    ports:
-      - "8085:8085"
-
-volumes:
-  - /data/atlassian-home:/opt/atlassian-home
-  - /data/postgres:/var/lib/postgresql/data
+#  bamboo:
+#    image: sloppycoder/atl-bamboo
+#    environment:
+#      - BASE_URL=$BASE_URL
+#    depends_on:
+#      - db
+#    networks:
+#      - default
+#    ports:
+#      - "8085:8085"

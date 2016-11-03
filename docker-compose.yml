@@ -41,13 +41,12 @@ services:
     ports:
       - "7990:7990"
 
-#  bamboo:
-#    image: sloppycoder/atl-bamboo
-#    environment:
-#      - BASE_URL=$BASE_URL
-#    depends_on:
-#      - db
-#    networks:
-#      - default
-#    ports:
-#      - "8085:8085"
+ jenkins:
+   image: jenkins:2.7.4
+   volumes:
+     /data/jenkins_home:/var/jenkins_home
+   networks:
+     - default
+   ports:
+     - "18085:8080"
+     - "50000:50000"

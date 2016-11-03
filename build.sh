@@ -10,11 +10,6 @@ set -o errexit
 )
 
 (
-    cd atl-web
-    docker build --rm --tag sloppycoder/atl-web .
-)
-
-(
     cd atl-postgres
     docker build --rm --tag sloppycoder/atl-postgres .
 )
@@ -30,7 +25,7 @@ do
 
     case "$MODULE" in
 
-        atl-jira|atl-stash|atl-bamboo)
+        atl-jira|atl-stash)
 
             ENV_STRING="$(docker inspect  -f '{{ index .ContainerConfig.Env 5 }}' ${TAG}:latest )" 
             VERSION="$(echo $ENV_STRING | cut -d '=' -f 2 )"

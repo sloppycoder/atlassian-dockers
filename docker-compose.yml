@@ -1,0 +1,53 @@
+#
+# start database and applications, without httpd
+# will reply on external web server or load balancer to direct traffic
+#
+# docker-compose up
+#
+
+version: '2'
+
+services:
+  db:
+    image: sloppycoder/atl-postgres
+    depends_on:
+      - db
+    networks:
+      - default
+
+  jira:
+    image: sloppycoder/atl-jira
+    environment:
+      - BASE_URL=$BASE_URL
+    depends_on:
+      - db
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+
+  stash:
+    image: sloppycoder/atl-stash
+    environment:
+      - BASE_URL=$BASE_URL
+    depends_on:
+      - db
+    networks:
+      - default
+    ports:
+      - "7990:7990"
+
+  bamboo:
+    image: sloppycoder/atl-bamboo
+    environment:
+      - BASE_URL=$BASE_URL
+    depends_on:
+      - db
+    networks:
+      - default
+    ports:
+      - "8085:8085"
+
+volumes:
+  - /data/atlassian-home:/opt/atlassian-home
+  - /data/postgres:/var/lib/postgresql/data

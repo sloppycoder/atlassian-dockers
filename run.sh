@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 [ "$BASE_URL" == "" ] && echo "BASE_URL not set, abort." && exit 1
 
